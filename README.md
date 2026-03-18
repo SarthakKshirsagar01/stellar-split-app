@@ -14,6 +14,10 @@
 
 🔗 **[https://stellar-split-app.vercel.app](https://stellar-split-app.vercel.app)**
 
+## 🎥 Demo Video
+
+▶️ **[Watch 1-minute Demo](https://www.loom.com/share/68043d01f1124ecdbc0579b585852874)**
+
 ---
 
 ## 📸 Screenshots
@@ -158,7 +162,8 @@ test test::test_cannot_pay_twice - should panic ... ok
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
 ```
 
-> 📸 **Screenshot:** _(add your test output screenshot here)_
+> 📸 **Screenshot:**
+> ![Test Output](./screenshots/test-output.png)
 
 ---
 
