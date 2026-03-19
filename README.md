@@ -151,8 +151,6 @@ Stellar token contract for real XLM transfers:
 | **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3)            |
 | **Wasm Hash**         | `69ba2ce96955683b7179fa4b05a598e02c87a999dfb1626a01e83bee95438e9c`                                                                    |
 
-## 📡 Deployed Contracts
-
 ### Split Bill Contract
 
 | Network               | Testnet                                                                                                                               |
@@ -218,6 +216,17 @@ test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured
 > ![Test Output](./screenshots/test-output.png)
 
 ---
+
+## ⚙️ CI/CD Pipeline
+
+![CI Status](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml/badge.svg)
+
+### Pipeline runs both contract tests automatically on every push:
+
+- ✅ Split Bill Contract — 5 tests
+- ✅ Split Token Contract — 4 tests
+
+![CI Screenshot](./screenshots/ci-screenshot.png)
 
 ## 🚀 Getting Started
 
