@@ -1,3 +1,5 @@
+import WalletButton from "./components/WalletButton";
+import useWallet from "./hooks/useWallet";
 import { useState } from "react";
 import CreateBill from "./components/CreateBill";
 import BillStatus from "./components/BillStatus";
@@ -24,7 +26,7 @@ function App() {
         <button className="logo" onClick={goHome}>
           💸 Stellar Split
         </button>
-        <span className="powered">Powered by Stellar</span>
+        <WalletButton />
       </nav>
 
       <div className="container">
