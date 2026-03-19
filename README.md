@@ -124,6 +124,17 @@ pub fn get_bill(env, bill_id) -> Bill
 pub fn has_paid(env, bill_id, participant) -> bool
 ```
 
+---
+
+## 📡 Deployed Contract
+
+| Network               | Testnet                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Contract ID**       | `CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3`                                                                            |
+| **Transaction**       | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/b197da03670c0b2ef0942be6128b1fa6a4e9cfd027cc1b4960b5a6e41fd3e29c) |
+| **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3)            |
+| **Wasm Hash**         | `69ba2ce96955683b7179fa4b05a598e02c87a999dfb1626a01e83bee95438e9c`                                                                    |
+
 ### Bill Data Structure
 
 ```rust
