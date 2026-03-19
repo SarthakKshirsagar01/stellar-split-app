@@ -29,10 +29,10 @@ jobs:
             target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
-      - name: Run contract tests
+      - name: Run split bill contract tests
         working-directory: contracts/hello-world
         run: cargo test --lib
 
-      - name: Build contract
-        working-directory: contracts/hello-world
-        run: cargo build --target wasm32-unknown-unknown --release
+      - name: Run split token contract tests
+        working-directory: contracts/split-token
+        run: cargo test --lib
