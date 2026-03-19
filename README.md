@@ -129,6 +129,17 @@ pub fn get_bill(env, bill_id) -> Bill
 pub fn has_paid(env, bill_id, participant) -> bool
 ```
 
+## 🔄 Inter-Contract Calls
+
+This contract makes inter-contract calls to the
+Stellar token contract for real XLM transfers:
+
+- **Token Contract**: Native XLM / Stellar Asset Contract
+- **Call**: `token::Client::transfer()`
+- **When**: Every time a participant pays their share
+- **Auto Release**: Contract sends full amount to
+  creator when all participants have paid
+
 ---
 
 ## 📡 Deployed Contract
