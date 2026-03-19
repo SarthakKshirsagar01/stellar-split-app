@@ -7,6 +7,7 @@
 [![React](https://img.shields.io/badge/Frontend-React-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Rust](https://img.shields.io/badge/Contract-Rust-f74c00?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![CI](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml/badge.svg)](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml)
 
 ---
 
@@ -25,6 +26,10 @@
 | Home Page                       | Create Bill                         | Bill Status                         | Pay Share                     |
 | ------------------------------- | ----------------------------------- | ----------------------------------- | ----------------------------- |
 | ![Home](./screenshots/home.png) | ![Create](./screenshots/create.png) | ![Status](./screenshots/status.png) | ![Pay](./screenshots/pay.png) |
+
+### 📱 Mobile View
+
+![Mobile](./screenshots/mobile.png)
 
 ---
 
@@ -152,25 +157,27 @@ pub struct Bill {
 
 ## 🧪 Tests
 
-**4 tests written and passing:**
+**5 tests written and passing:**
 
-| Test                    | Description                                                            |
-| ----------------------- | ---------------------------------------------------------------------- |
-| `test_create_bill`      | Verifies bill is created with correct amount and per-share calculation |
-| `test_pay_share`        | Verifies payment is recorded correctly on-chain                        |
-| `test_release_funds`    | Verifies funds release only when ALL participants have paid            |
-| `test_cannot_pay_twice` | Verifies smart contract rejects duplicate payments                     |
+| Test                              | Description                                                            |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| `test_create_bill`                | Verifies bill is created with correct amount and per-share calculation |
+| `test_pay_share_transfers_tokens` | Verifies real XLM transfers on payment                                 |
+| `test_auto_release_when_all_paid` | Verifies funds auto-release when all paid                              |
+| `test_cancel_and_refund`          | Verifies creator can cancel and refund everyone                        |
+| `test_cannot_pay_twice`           | Verifies smart contract rejects duplicate payments                     |
 
 ### ✅ Test Output
 
 ```
-running 4 tests
+running 5 tests
 test test::test_create_bill ... ok
-test test::test_pay_share ... ok
-test test::test_release_funds ... ok
+test test::test_pay_share_transfers_tokens ... ok
+test test::test_auto_release_when_all_paid ... ok
+test test::test_cancel_and_refund ... ok
 test test::test_cannot_pay_twice - should panic ... ok
 
-test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 > 📸 **Screenshot:**
