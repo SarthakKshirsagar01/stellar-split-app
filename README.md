@@ -151,6 +151,29 @@ Stellar token contract for real XLM transfers:
 | **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3)            |
 | **Wasm Hash**         | `69ba2ce96955683b7179fa4b05a598e02c87a999dfb1626a01e83bee95438e9c`                                                                    |
 
+## 📡 Deployed Contracts
+
+### Split Bill Contract
+
+| Network               | Testnet                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Contract ID**       | `CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3`                                                                            |
+| **Transaction**       | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/b197da03670c0b2ef0942be6128b1fa6a4e9cfd027cc1b4960b5a6e41fd3e29c) |
+| **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3)            |
+| **Wasm Hash**         | `69ba2ce96955683b7179fa4b05a598e02c87a999dfb1626a01e83bee95438e9c`                                                                    |
+
+### 🪙 SPLIT Token Contract
+
+| Network               | Testnet                                                                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Token Address**     | `CCZJEXXXA6WSZSTVJVFXOY2TVMSFE4L5KFWUST363EFH4VZ2FTJO7IPA`                                                                            |
+| **Token Name**        | Split Token                                                                                                                           |
+| **Token Symbol**      | SPLIT                                                                                                                                 |
+| **Decimals**          | 7                                                                                                                                     |
+| **Transaction**       | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/5586af76ee46a2f53d170e7af38cbd84a38562a366a6329502486f0b5077d266) |
+| **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CCZJEXXXA6WSZSTVJVFXOY2TVMSFE4L5KFWUST363EFH4VZ2FTJO7IPA)            |
+| **Wasm Hash**         | `170db76d45a5f9bc5eb25095d9152a3d9f3d129b192cbc136f63d7996a677a7c`                                                                    |
+
 ### Bill Data Structure
 
 ```rust
