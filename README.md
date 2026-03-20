@@ -82,26 +82,38 @@ With Stellar Split:
 ## 📁 Project Structure
 
 ```
-stellar-split/
-│
 ├── contracts/
-│   └── hello-world/
-│       ├── Cargo.toml              # Contract dependencies
+│   ├── hello-world/
+│   │   ├── Cargo.toml              # Contract dependencies
+│   │   └── src/
+│   │       └── lib.rs              # Soroban split bill contract + tests
+│   └── split-token/
+│       ├── Cargo.toml              # Token contract dependencies
 │       └── src/
-│           └── lib.rs              # Soroban smart contract + tests
+│           └── lib.rs              # Custom SPLIT token contract + tests
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── CreateBill.jsx      # Bill creation form
 │   │   │   ├── BillStatus.jsx      # Payment status tracker
-│   │   │   └── PayShare.jsx        # Pay your share screen
+│   │   │   ├── PayShare.jsx        # Pay your share screen
+│   │   │   └── WalletButton.jsx    # Freighter wallet connect button
+│   │   ├── hooks/
+│   │   │   └── useWallet.js        # Freighter wallet hook
+│   │   ├── lib/
+│   │   │   ├── contract.js         # Soroban contract integration
+│   │   │   └── stellar.js          # Stellar transaction helpers
 │   │   ├── App.jsx                 # Main app with routing
 │   │   ├── index.css               # Global styles
 │   │   └── main.jsx                # Entry point
 │   ├── package.json
 │   └── vite.config.js
 │
+├── .github/
+│   └── workflows/
+│       └── test.yml                # CI/CD pipeline
+├── screenshots/                    # Project screenshots
 ├── Cargo.toml                      # Workspace config
 └── README.md
 ```
@@ -301,12 +313,12 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 🗺️ Roadmap
 
-| Level          | Feature                                             |
-| -------------- | --------------------------------------------------- |
-| ✅ **Level 3** | Core bill splitting dApp with tests                 |
-| 🔜 **Level 4** | Unequal splits, deadlines, payment timeouts         |
-| 🔜 **Level 5** | Real wallet integration, shareable links, mobile UI |
-| 🔜 **Level 6** | Group wallets, recurring bills, multi-currency      |
+| Level          | Feature                                                   |
+| -------------- | --------------------------------------------------------- |
+| ✅ **Level 3** | Stellar Journey to Mastery — Level 3                      |
+| ✅ **Level 4** | Real XLM transfers, CI/CD, mobile responsive, SPLIT token |
+| 🔜 **Level 5** | Real MVP with 5 users, shareable links                    |
+| 🔜 **Level 6** | Group wallets, recurring bills, multi-currency            |
 
 ---
 
