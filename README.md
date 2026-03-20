@@ -44,7 +44,7 @@ The problem it solves:
 With Stellar Split:
 
 - ✅ Create a bill on-chain in seconds
-- ✅ Share a link with your group
+- ✅ Connect Freighter wallet and sign real transactions
 - ✅ Everyone pays their exact share in XLM
 - ✅ Funds release automatically when all paid
 - ✅ **Zero trust required. Zero chasing needed.**
@@ -53,15 +53,18 @@ With Stellar Split:
 
 ## ✨ Features
 
-| Feature             | Description                                         |
-| ------------------- | --------------------------------------------------- |
-| 📝 **Create Bill**  | Set title, total amount, and number of participants |
-| 🧮 **Auto Split**   | Per-share amount calculated and shown instantly     |
-| 🔗 **Shareable**    | Share bill link with your group                     |
-| 👀 **Live Status**  | See who has paid and who hasn't in real time        |
-| 💜 **Pay Share**    | Pay your portion directly with your Stellar wallet  |
-| ✅ **Auto Release** | Funds release to creator when everyone has paid     |
-| 🚫 **Fraud Proof**  | Smart contract prevents double payments             |
+| Feature                 | Description                                          |
+| ----------------------- | ---------------------------------------------------- |
+| 📝 **Create Bill**      | Set title, total amount, and number of participants  |
+| 🧮 **Auto Split**       | Per-share amount calculated and shown instantly      |
+| 🔗 **Shareable**        | Share bill link with your group                      |
+| 👀 **Live Status**      | See who has paid and who hasn't in real time         |
+| 🔐 **Freighter Wallet** | Connect wallet, view balance, sign real transactions |
+| 💜 **Pay Share**        | Pay your portion directly with Freighter wallet      |
+| ✅ **Auto Release**     | Funds release to creator when everyone has paid      |
+| 🚫 **Fraud Proof**      | Smart contract prevents double payments              |
+| 🪙 **SPLIT Token**      | Custom token deployed on Stellar testnet             |
+| ♻️ **Cancel & Refund**  | Creator can cancel bill and refund everyone          |
 
 ---
 
@@ -72,16 +75,19 @@ With Stellar Split:
 | **Smart Contract** | Rust + Soroban SDK v21 |
 | **Blockchain**     | Stellar Testnet        |
 | **Frontend**       | React.js + Vite        |
-| **Wallet**         | Freighter Wallet       |
+| **Wallet**         | Freighter Wallet v6    |
 | **Styling**        | Custom CSS             |
 | **Deployment**     | Vercel                 |
 | **Testing**        | Soroban Test Framework |
+| **CI/CD**          | GitHub Actions         |
 
 ---
 
 ## 📁 Project Structure
 
 ```
+stellar-split/
+│
 ├── contracts/
 │   ├── hello-world/
 │   │   ├── Cargo.toml              # Contract dependencies
@@ -122,46 +128,56 @@ With Stellar Split:
 
 ## 📜 Smart Contract
 
-The Soroban contract (`lib.rs`) has **5 core functions**:
+The Soroban contract (`lib.rs`) has **7 core functions**:
 
 ```rust
 // Create a new bill
-pub fn create_bill(env, creator, total_amount, participants) -> u64
+pub fn create_bill(env, creator, total_amount, participants, token) -> u64
 
-// Pay your share of the bill
+// Pay your share — real XLM transfer
 pub fn pay_share(env, bill_id, payer)
 
-// Release funds when all have paid
+// Auto release funds when all paid
 pub fn release_funds(env, bill_id) -> bool
+
+// Cancel bill and refund everyone
+pub fn cancel_bill(env, bill_id, caller)
 
 // Get bill details and status
 pub fn get_bill(env, bill_id) -> Bill
 
 // Check if a specific address has paid
 pub fn has_paid(env, bill_id, participant) -> bool
+
+// Get total collected so far
+pub fn get_collected(env, bill_id) -> i128
 ```
+
+---
 
 ## 🔄 Inter-Contract Calls
 
-This contract makes inter-contract calls to the
-Stellar token contract for real XLM transfers:
+This contract makes inter-contract calls to the Stellar token contract for real XLM transfers:
 
 - **Token Contract**: Native XLM / Stellar Asset Contract
 - **Call**: `token::Client::transfer()`
 - **When**: Every time a participant pays their share
-- **Auto Release**: Contract sends full amount to
-  creator when all participants have paid
+- **Auto Release**: Contract sends full amount to creator when all participants have paid
 
 ---
 
-## 📡 Deployed Contract
+## 🔐 Freighter Wallet Integration
 
-| Network               | Testnet                                                                                                                               |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **Contract ID**       | `CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3`                                                                            |
-| **Transaction**       | [View on Stellar Expert](https://stellar.expert/explorer/testnet/tx/b197da03670c0b2ef0942be6128b1fa6a4e9cfd027cc1b4960b5a6e41fd3e29c) |
-| **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CB5C5K372KUJQJYNISD5MSE76FMVLPJYQK5RVTZDM3SUK6JJFAMJLYL3)            |
-| **Wasm Hash**         | `69ba2ce96955683b7179fa4b05a598e02c87a999dfb1626a01e83bee95438e9c`                                                                    |
+Users can connect their Freighter wallet to:
+
+- View their Stellar wallet address
+- Check their XLM balance in real time
+- Sign and submit real transactions on Stellar Testnet
+- View transaction confirmation on Stellar Explorer
+
+---
+
+## 📡 Deployed Contracts
 
 ### Split Bill Contract
 
@@ -184,32 +200,30 @@ Stellar token contract for real XLM transfers:
 | **Contract Explorer** | [View on Stellar Lab](https://lab.stellar.org/r/testnet/contract/CCZJEXXXA6WSZSTVJVFXOY2TVMSFE4L5KFWUST363EFH4VZ2FTJO7IPA)            |
 | **Wasm Hash**         | `170db76d45a5f9bc5eb25095d9152a3d9f3d129b192cbc136f63d7996a677a7c`                                                                    |
 
-### Bill Data Structure
-
-```rust
-pub struct Bill {
-    pub creator: Address,        // Who created the bill
-    pub total_amount: i128,      // Total bill amount
-    pub per_share: i128,         // Amount each person owes
-    pub participants: Vec<Address>, // List of participants
-    pub paid: Map<Address, bool>,   // Payment status per person
-    pub released: bool,          // Whether funds are released
-}
-```
-
 ---
 
 ## 🧪 Tests
 
-**5 tests written and passing:**
+**9 tests total — all passing:**
 
-| Test                              | Description                                                            |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| `test_create_bill`                | Verifies bill is created with correct amount and per-share calculation |
-| `test_pay_share_transfers_tokens` | Verifies real XLM transfers on payment                                 |
-| `test_auto_release_when_all_paid` | Verifies funds auto-release when all paid                              |
-| `test_cancel_and_refund`          | Verifies creator can cancel and refund everyone                        |
-| `test_cannot_pay_twice`           | Verifies smart contract rejects duplicate payments                     |
+### Split Bill Contract (5 tests)
+
+| Test                              | Description                                    |
+| --------------------------------- | ---------------------------------------------- |
+| `test_create_bill`                | Bill created with correct amount and per-share |
+| `test_pay_share_transfers_tokens` | Real XLM transfers on payment                  |
+| `test_auto_release_when_all_paid` | Funds auto-release when all paid               |
+| `test_cancel_and_refund`          | Creator can cancel and refund everyone         |
+| `test_cannot_pay_twice`           | Contract rejects duplicate payments            |
+
+### SPLIT Token Contract (4 tests)
+
+| Test                       | Description                            |
+| -------------------------- | -------------------------------------- |
+| `test_initialize_and_mint` | Token initialized and minted correctly |
+| `test_transfer`            | Token transfers work correctly         |
+| `test_burn`                | Token burning works correctly          |
+| `test_token_metadata`      | Token symbol, name, decimals correct   |
 
 ### ✅ Test Output
 
@@ -220,8 +234,14 @@ test test::test_pay_share_transfers_tokens ... ok
 test test::test_auto_release_when_all_paid ... ok
 test test::test_cancel_and_refund ... ok
 test test::test_cannot_pay_twice - should panic ... ok
+test result: ok. 5 passed; 0 failed
 
-test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured
+running 4 tests
+test test::test_initialize_and_mint ... ok
+test test::test_transfer ... ok
+test test::test_burn ... ok
+test test::test_token_metadata ... ok
+test result: ok. 4 passed; 0 failed
 ```
 
 > 📸 **Screenshot:**
@@ -231,14 +251,17 @@ test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured
 
 ## ⚙️ CI/CD Pipeline
 
-![CI Status](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml/badge.svg)
+[![CI Status](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml/badge.svg)](https://github.com/SarthakKshirsagar01/stellar-split-app/actions/workflows/test.yml)
 
-### Pipeline runs both contract tests automatically on every push:
+Pipeline runs automatically on every push:
 
 - ✅ Split Bill Contract — 5 tests
 - ✅ Split Token Contract — 4 tests
+- ✅ Frontend Build
 
 ![CI Screenshot](./screenshots/ci-screenshot.png)
+
+---
 
 ## 🚀 Getting Started
 
@@ -261,6 +284,9 @@ cd stellar-split-app
 ```bash
 cd contracts/hello-world
 cargo test --lib
+
+cd ../split-token
+cargo test --lib
 ```
 
 ### 3. Run the frontend
@@ -277,59 +303,53 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 🎮 How to Use
 
-**Step 1 — Create a Bill**
+**Step 1 — Connect Wallet**
+
+- Click "Connect Wallet" in the navbar
+- Approve connection in Freighter popup
+- Your wallet address and XLM balance will show
+
+**Step 2 — Create a Bill**
 
 - Click "Create a Bill"
 - Enter title, total amount in XLM, number of people
-- Per-share amount is calculated automatically
-- Click "Create Bill"
+- Click "Create Bill" — transaction signed via Freighter
 
-**Step 2 — Share with Friends**
+**Step 3 — Share with Friends**
 
-- Copy the bill link
-- Share in your WhatsApp/Telegram group
+- Share the bill link with your group
 
-**Step 3 — Friends Pay Their Share**
+**Step 4 — Friends Pay Their Share**
 
-- Friends open the link
-- Connect their Stellar wallet
-- Pay their exact share in XLM
+- Friends connect their Freighter wallet
+- Click "Pay Share" — Freighter popup opens
+- Approve transaction — real XLM moves on chain
 
-**Step 4 — Automatic Release**
+**Step 5 — Automatic Release**
 
-- Once everyone pays, funds are automatically sent to the bill creator
-- No manual action needed
+- Once everyone pays, funds automatically go to creator
+- View transaction on Stellar Explorer
 
 ---
 
 ## 🔐 Security Features
 
-- **Non-custodial** — funds go directly to the creator, never held by us
+- **Non-custodial** — funds go directly on-chain, never held by us
 - **Duplicate payment protection** — contract rejects if you try to pay twice
 - **Participant validation** — only listed participants can pay
-- **Immutable records** — all payments recorded permanently on Stellar blockchain
+- **Cancel & Refund** — creator can cancel and everyone gets refunded
+- **Immutable records** — all payments recorded permanently on Stellar
 
 ---
 
 ## 🗺️ Roadmap
 
-| Level          | Feature                                                   |
-| -------------- | --------------------------------------------------------- |
-| ✅ **Level 3** | Stellar Journey to Mastery — Level 3                      |
-| ✅ **Level 4** | Real XLM transfers, CI/CD, mobile responsive, SPLIT token |
-| 🔜 **Level 5** | Real MVP with 5 users, shareable links                    |
-| 🔜 **Level 6** | Group wallets, recurring bills, multi-currency            |
-
----
-
-## 📝 Git Commits
-
-```
-feat: add soroban split bill contract with tests and react frontend
-feat: add react UI with create bill, bill status and pay share pages
-test: add 4 contract tests all passing
-docs: add complete README with screenshots and documentation
-```
+| Level       | Feature                                                                     | Status     |
+| ----------- | --------------------------------------------------------------------------- | ---------- |
+| **Level 3** | Core bill splitting dApp with tests                                         | ✅ Done    |
+| **Level 4** | Real XLM transfers, CI/CD, mobile responsive, SPLIT token, Freighter wallet |            |
+| **Level 5** | Real MVP with 5 users, shareable links                                      | 🔜 Next    |
+| **Level 6** | Group wallets, recurring bills, Demo Day                                    | 🔜 Planned |
 
 ---
 
@@ -338,7 +358,7 @@ docs: add complete README with screenshots and documentation
 **Sarthak Kshirsagar**
 
 - GitHub: [@SarthakKshirsagar01](https://github.com/SarthakKshirsagar01)
-- Built for: [Stellar Journey to Mastery — Level 3 Orange Belt](https://risein.com)
+- Built for: [Stellar Journey to Mastery — Level 3 & Level 4](https://risein.com)
 
 ---
 
