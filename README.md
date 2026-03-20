@@ -17,7 +17,7 @@
 
 ## 🎥 Demo Video
 
-▶️ **[Watch 1-minute Demo](https://www.loom.com/share/68043d01f1124ecdbc0579b585852874)**
+▶️ **[Watch 1-minute Demo](https://www.loom.com/share/da0a8f0a4f0245fd8bdf1cb5eec963f0)**
 
 ---
 
