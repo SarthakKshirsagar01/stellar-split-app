@@ -1,59 +1,58 @@
 import { useState, useEffect } from "react";
+import { isConnected, getAddress, requestAccess } from "@stellar/freighter-api";
 
 export default function useWallet() {
   const [walletAddress, setWalletAddress] = useState(null);
-  const [isFreighterInstalled, setIsFreighterInstalled] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      checkFreighter();
-    }, 500);
+    checkConnection();
   }, []);
 
-  async function checkFreighter() {
+  const checkConnection = async () => {
     try {
-      const { isConnected, getPublicKey } =
-        await import("@stellar/freighter-api");
-      const connected = await isConnected();
-      setIsFreighterInstalled(true);
-      if (connected.isConnected) {
-        const key = await getPublicKey();
-        setWalletAddress(key.publicKey);
+      const result = await isConnected();
+      if (result.isConnected !== undefined) {
+        setIsInstalled(true);
       }
-    } catch {
-      setIsFreighterInstalled(false);
+      if (result.isConnected) {
+        const addressResult = await getAddress();
+        if (addressResult.address) {
+          setWalletAddress(addressResult.address);
+        }
+      }
+    } catch (e) {
+      console.log("Freighter not detected:", e);
     }
-  }
+  };
 
-  async function connectWallet() {
+  const connectWallet = async () => {
     setLoading(true);
-    setError(null);
     try {
-      const { requestAccess, getPublicKey } =
-        await import("@stellar/freighter-api");
-      const result = await requestAccess();
-      if (result.publicKey) {
-        setWalletAddress(result.publicKey);
-        setIsFreighterInstalled(true);
+      const accessResult = await requestAccess();
+      if (accessResult.error) {
+        alert("Connection rejected: " + accessResult.error);
+        return;
       }
-    } catch (err) {
-      setError("Failed to connect wallet");
+      const addressResult = await getAddress();
+      if (addressResult.address) {
+        setWalletAddress(addressResult.address);
+        setIsInstalled(true);
+      }
+    } catch (e) {
+      alert("Failed to connect: " + e.message);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  function disconnectWallet() {
-    setWalletAddress(null);
-  }
+  const disconnectWallet = () => setWalletAddress(null);
 
   return {
     walletAddress,
-    isFreighterInstalled,
+    isInstalled,
     loading,
-    error,
     connectWallet,
     disconnectWallet,
   };

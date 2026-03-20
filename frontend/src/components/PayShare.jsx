@@ -1,20 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useWallet from "../hooks/useWallet";
+import { sendPayment, getBalance } from "../lib/stellar";
+
+const CREATOR_ADDRESS =
+  "GDHWXGMJVAYCHUWDATDMANHES3IFQOI2I5DNI7I43DZILSKSECBMQFOH";
 
 export default function PayShare({ bill, onBack, onPaid }) {
   const { walletAddress, isInstalled, connectWallet, loading } = useWallet();
   const [paying, setPaying] = useState(false);
   const [done, setDone] = useState(false);
+  const [txHash, setTxHash] = useState(null);
+  const [error, setError] = useState(null);
+  const [balance, setBalance] = useState(null);
+
+  useEffect(() => {
+    if (walletAddress) {
+      getBalance(walletAddress).then(setBalance);
+    }
+  }, [walletAddress]);
 
   if (!bill) return null;
 
   const handlePay = async () => {
     if (!walletAddress) return;
     setPaying(true);
-    await new Promise((r) => setTimeout(r, 2000));
+    setError(null);
+    const amountXLM = bill.perShare.toString();
+    const result = await sendPayment(walletAddress, CREATOR_ADDRESS, amountXLM);
+    if (result.success) {
+      setTxHash(result.hash);
+      setDone(true);
+      setTimeout(() => onPaid({ ...bill, paid: (bill.paid || 0) + 1 }), 2000);
+    } else {
+      setError(result.error);
+    }
     setPaying(false);
-    setDone(true);
-    setTimeout(() => onPaid({ ...bill, paid: (bill.paid || 0) + 1 }), 1500);
   };
 
   return (
@@ -29,12 +49,26 @@ export default function PayShare({ bill, onBack, onPaid }) {
           <p>Your share</p>
           <h2>{bill.perShare} XLM</h2>
         </div>
-
         {done ? (
           <div className="success-box">
             <div className="icon">✅</div>
             <h3>Payment Successful!</h3>
-            <p>Your share has been recorded on Stellar</p>
+            <p>Transaction confirmed on Stellar</p>
+            {txHash && (
+              <a
+                href={"https://stellar.expert/explorer/testnet/tx/" + txHash}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: "#a78bfa",
+                  fontSize: "12px",
+                  marginTop: "8px",
+                  display: "block",
+                }}
+              >
+                View on Stellar Explorer →
+              </a>
+            )}
           </div>
         ) : (
           <div>
@@ -89,7 +123,7 @@ export default function PayShare({ bill, onBack, onPaid }) {
                     style={{
                       color: "#6b7280",
                       fontSize: "12px",
-                      marginBottom: "6px",
+                      marginBottom: "4px",
                     }}
                   >
                     Connected wallet
@@ -104,15 +138,41 @@ export default function PayShare({ bill, onBack, onPaid }) {
                   >
                     {walletAddress}
                   </p>
+                  {balance && (
+                    <p
+                      style={{
+                        color: "#4ade80",
+                        fontSize: "12px",
+                        marginTop: "4px",
+                      }}
+                    >
+                      Balance: {balance} XLM
+                    </p>
+                  )}
                 </div>
+                {error && (
+                  <div
+                    style={{
+                      background: "rgba(239,68,68,0.1)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "12px",
+                      padding: "12px",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    <p style={{ color: "#ef4444", fontSize: "13px" }}>
+                      Error: {error}
+                    </p>
+                  </div>
+                )}
                 <button
                   className="btn-full"
                   onClick={handlePay}
                   disabled={paying}
                 >
                   {paying
-                    ? "Processing on Stellar..."
-                    : `Pay ${bill.perShare} XLM`}
+                    ? "Waiting for Freighter approval..."
+                    : "Pay " + bill.perShare + " XLM"}
                 </button>
               </div>
             )}
