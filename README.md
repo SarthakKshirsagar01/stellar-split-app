@@ -345,12 +345,10 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 🗺️ Roadmap
 
-| Level       | Feature                                                                     | Status     |
-| ----------- | --------------------------------------------------------------------------- | ---------- |
-| **Level 3** | Core bill splitting dApp with tests                                         | ✅ Done    |
-| **Level 4** | Real XLM transfers, CI/CD, mobile responsive, SPLIT token, Freighter wallet |            |
-| **Level 5** | Real MVP with 5 users, shareable links                                      | 🔜 Next    |
-| **Level 6** | Group wallets, recurring bills, Demo Day                                    | 🔜 Planned |
+| Level          | Feature                                                          | Status |
+| -------------- | ---------------------------------------------------------------- | ------ |
+| ✅ **Level 3** | Core bill splitting dApp with tests                              |
+| ✅ **Level 4** | Real XLM transfers, CI/CD, mobile, SPLIT token, Freighter wallet |
 
 ---
 
@@ -360,6 +358,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 - GitHub: [@SarthakKshirsagar01](https://github.com/SarthakKshirsagar01)
 - Built for:(https://risein.com)
+  Built for: Stellar Journey to Mastery — Level 3 & Level 4
 
 ---
 
