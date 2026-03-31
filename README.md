@@ -358,7 +358,7 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 **Sarthak Kshirsagar**
 
 - GitHub: [@SarthakKshirsagar01](https://github.com/SarthakKshirsagar01)
-- Built for: [Stellar Journey to Mastery — Level 3 & Level 4](https://risein.com)
+- Built for:(https://risein.com)
 
 ---
 
@@ -371,7 +371,5 @@ MIT License — feel free to use and build on this project.
 <div align="center">
 
 **Built with 💜 on Stellar Blockchain**
-
-_Stellar Journey to Mastery — Monthly Builder Challenges_
 
 </div>
